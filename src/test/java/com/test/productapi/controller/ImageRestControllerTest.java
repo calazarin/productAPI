@@ -1,13 +1,16 @@
 package com.test.productapi.controller;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.google.gson.Gson;
+import com.test.productapi.entity.Image;
+import com.test.productapi.entity.Product;
 import com.test.productapi.service.ImageService;
 import com.test.productapi.vo.ImageVO;
 
@@ -43,20 +48,6 @@ public class ImageRestControllerTest {
 	    return gson.toJson(stub);
 	}
 
-	@Test
-	public void testCreateImage() throws Exception {
-		this.mockMvc.perform(
-				post("/images")
-				.content(this.jsonPayload())
-				.contentType(MediaType.APPLICATION_JSON)
-				)
-		.andDo(print())
-		.andExpect(status()
-				.isCreated())
-		.andExpect(content()
-				.string(containsString("New image created successfully")));
-	}
-	
 	@Test
 	public void testUpdateImage() throws Exception {
 		this.mockMvc.perform(

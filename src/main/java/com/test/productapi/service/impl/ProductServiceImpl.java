@@ -9,6 +9,7 @@ import javax.persistence.NoResultException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import com.test.productapi.dao.ImageDAO;
 import com.test.productapi.dao.ProductDAO;
@@ -83,7 +84,7 @@ public class ProductServiceImpl implements ProductService {
 			product.setParentProduct(parentProduct);
 		}
 		productDAO.insertOrUpdate(product);
-		if(productVO.getImageList() != null && !productVO.getImageList().isEmpty()) {
+		if(!CollectionUtils.isEmpty(productVO.getImageList())) {
 			this.saveImageVOList(productVO.getImageList(), product, true);
 		}
 		return product;

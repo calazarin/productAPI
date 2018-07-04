@@ -45,7 +45,7 @@ public class ImageServiceImpl implements ImageService {
 	}
 	
 	@Override
-	public void createImage(ImageVO imageVO) throws ServiceException {
+	public Image createImage(ImageVO imageVO) throws ServiceException {
 		log.debug("Creating new image "+imageVO);
 		
 		Product product = null;
@@ -56,7 +56,9 @@ public class ImageServiceImpl implements ImageService {
 				log.info("Product not found - creating new image without it - productId - "+imageVO.getProductId());
 			}
 		}
-		this.imageDAO.insertOrUpdate(ImageUtil.convertToEntity(imageVO,true, product));
+		Image entity = ImageUtil.convertToEntity(imageVO,true, product);
+		this.imageDAO.insertOrUpdate(entity);
+		return entity;
 	}
 
 	@Override
