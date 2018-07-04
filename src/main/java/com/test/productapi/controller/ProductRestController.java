@@ -1,5 +1,6 @@
 package com.test.productapi.controller;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.test.productapi.entity.Product;
 import com.test.productapi.exception.ResourceNotFoundException;
@@ -60,13 +62,10 @@ public class ProductRestController {
 	public ResponseEntity<String> createProduct(@Valid @RequestBody ProductVO productVO) throws ServiceException {
 		Product createdProduct = productService.createNewProduct(productVO);
 
-		/*
-		 * URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-		 * .buildAndExpand(createdProduct.getId()).toUri();
-		 * 
-		 * return ResponseEntity.created(location).build();
-		 */
-		return new ResponseEntity<String>(PRODUCT_CREATED_SUCCESSFULLY_MSG, HttpStatus.CREATED);
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/details/{includeRelationship}/{productId}").buildAndExpand(true, createdProduct.getId())
+				.toUri();
+		return ResponseEntity.created(location).build();
 	}
 
 	@ApiOperation(value = "Updates product for given payload", response = String.class)

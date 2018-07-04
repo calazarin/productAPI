@@ -13,7 +13,7 @@ import com.test.productapi.vo.ImageVO;
  */
 public interface ImageService {
 
-	void createImage(ImageVO imageVO) throws ServiceException;
+	Image createImage(ImageVO imageVO) throws ServiceException;
 	
 	void deleteImage(Long imageId);
 	

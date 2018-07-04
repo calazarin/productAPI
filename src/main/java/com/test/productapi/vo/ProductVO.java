@@ -6,8 +6,6 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -24,7 +22,6 @@ public class ProductVO implements Serializable {
 	
 	private static final long serialVersionUID = -687991492884005033L;
 
-	@JsonIgnore
 	private Long id;
 
 	@NotNull(message="Producto description is mandatory")

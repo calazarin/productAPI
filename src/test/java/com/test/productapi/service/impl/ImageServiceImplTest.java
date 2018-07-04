@@ -55,10 +55,10 @@ public class ImageServiceImplTest {
 		ImageVO imageVO = new ImageVO();
 		this.imageService.createImage(imageVO);
 		List<Image> imageList = this.imageService.findAllImages();
-		assertEquals(1, imageList.size());
+		assertEquals(4, imageList.size());
 		this.imageService.deleteImage(imageList.get(0).getId());
 		List<Image> imageListAfterDeleing = this.imageService.findAllImages();
-		assertEquals(0, imageListAfterDeleing.size());
+		assertEquals(3, imageListAfterDeleing.size());
 		
 	}
 	

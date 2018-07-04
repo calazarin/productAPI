@@ -1,5 +1,6 @@
 package com.test.productapi.controller;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.test.productapi.entity.Image;
 import com.test.productapi.exception.ResourceNotFoundException;
 import com.test.productapi.exception.ServiceException;
 import com.test.productapi.service.ImageService;
@@ -53,9 +56,13 @@ public class ImageRestController {
 	@ApiOperation(value = "Creates a new image", response = String.class)
 	@ApiResponses(value = { @ApiResponse(code = 201, message = IMAGE_CREATED_SUCCESSFULLY_MSG), })
 	@PostMapping(value = "/images", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> createImage(@Valid @RequestBody ImageVO imageVO) throws ServiceException {
-		this.imageService.createImage(imageVO);
-		return new ResponseEntity<String>(IMAGE_CREATED_SUCCESSFULLY_MSG, HttpStatus.CREATED);
+	public ResponseEntity<String> createImage(@RequestBody ImageVO imageVO) throws ServiceException {
+		Image createdImage = this.imageService.createImage(imageVO);
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{parentProductId}").buildAndExpand(createdImage.getProduct().getId())
+				.toUri();
+		return ResponseEntity.created(location).build();
+		
 	}
 
 	@ApiOperation(value = "Updates image for given payload", response = String.class)
@@ -82,8 +89,8 @@ public class ImageRestController {
 	@GetMapping("/images/{parentProductId}")
 	public ResponseEntity<List<ImageVO>> getProductImages(@PathVariable Long parentProductId) throws ServiceException {
 		try {
-		return new ResponseEntity<List<ImageVO>>(this.imageService.findImagesForProductId(parentProductId),
-				HttpStatus.OK);
+		   List<ImageVO> allImages = this.imageService.findImagesForProductId(parentProductId);			
+		   return new ResponseEntity<List<ImageVO>>(allImages,HttpStatus.OK);
 		}catch(ServiceException sex) {
 			throw new ResourceNotFoundException(sex.getMessage());
 		}
