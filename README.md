@@ -4,15 +4,13 @@ This is a sample Product API created to illustrate usage of Spring Boot + Swagge
 
 ## Table of Contents
 
-1. [Implementation](#implementation)
+1. [Dependencies](#Dependencies)
+1. [Installation](#Installation)
 1. [Usage](#usage)
-
-
-## Implementation
+1. [API Information](#API information)
 
 ### Dependencies
 
-- Install Git 
 - Install Maven
 - Clone this repository
 
